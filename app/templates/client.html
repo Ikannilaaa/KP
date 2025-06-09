@@ -404,7 +404,9 @@
     document.getElementById('connectBtn').onclick = () => {
       if (socket && socket.connected) return;
 
-      socket = io();
+      socket = io("https://vps.danar.site", {
+		path: "/model1/socket.io"
+	  });
 
       socket.on('connect', () => {
         statusText.textContent = "Status: Connected";
