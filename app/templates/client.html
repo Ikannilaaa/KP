@@ -495,7 +495,7 @@
         if (captureInterval) clearInterval(captureInterval);
 
         setTimeout(() => {
-            fetch(`model1/websocket/summary?sid=${userSID}`)
+            fetch(`/websocket/summary?sid=${userSID}`)
             .then(response => response.json())
             .then(data => {
                 console.log(data);
