@@ -405,7 +405,8 @@
       if (socket && socket.connected) return;
 
       socket = io("https://vps.danar.site", {
-		path: "/model1/socket.io"
+		path: "/model1/socket.io",
+		transports: ["websocket"]
 	  });
 
       socket.on('connect', () => {
