@@ -100,6 +100,6 @@ sudo apt install -y nodejs
 
 sudo npm install -g pm2
 
-# pm2 start run.py --interpreter python3 --name openpose-backend
+pm2 start run.py --name openpose-backend --interpreter /usr/bin/python3.8
 
-python3 run.py
+# python3 run.py
