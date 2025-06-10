@@ -1,7 +1,8 @@
-from app import create_app, socketio
-import app.ws_handlers
 import eventlet
 eventlet.monkey_patch()
+
+from app import create_app, socketio
+import app.ws_handlers
 
 app = create_app()
 
