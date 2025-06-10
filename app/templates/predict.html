@@ -124,7 +124,7 @@
       if (isVideo) videoPreview.src = url;
 
       const formData = new FormData();
-      formData.append('images', file);
+      formData.append('file', file);
 
       if (isImage) {
         fetch('https://vps.danar.site/model1/predict/image', {
@@ -155,12 +155,22 @@
     }
 
     function renderImageResult(res) {
-      resultContainer.innerHTML = `
-        <img src="${res.gambar_path}" style="max-width:100%; border-radius:8px; margin-bottom:10px;">
-        ${createBox('Feedback', res.feedback)}
-        ${createBox('REBA Summary', res.summary.reba_summary)}
-        ${createBox('RULA Summary', res.summary.rula_summary)}
-      `;
+        resultContainer.innerHTML = '';
+
+        if (res.gambar_path) {
+            const img = document.createElement('img');
+            img.src = res.gambar_path;
+            img.style.maxWidth = '100%';
+            img.style.borderRadius = '8px';
+            img.style.marginBottom = '10px';
+            resultContainer.appendChild(img);
+        }
+
+        resultContainer.innerHTML += `
+            ${createBox('Feedback', res.feedback || 'Tidak tersedia')}
+            ${createBox('REBA Summary', res.summary?.reba_summary || 'Tidak tersedia')}
+            ${createBox('RULA Summary', res.summary?.rula_summary || 'Tidak tersedia')}
+        `;
     }
 
     function renderVideoResult(res) {
