@@ -124,7 +124,7 @@
       if (isVideo) videoPreview.src = url;
 
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append('images', file);
 
       if (isImage) {
         fetch('https://vps.danar.site/model1/predict/image', {
