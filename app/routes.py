@@ -81,5 +81,5 @@ def serve_client():
     return render_template("client.html")
 
 @pose_bp.route("/client")
-def serve_client():
+def serve_client_predict():
     return render_template("predict.html")
