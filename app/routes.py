@@ -79,3 +79,7 @@ def get_summary():
 @pose_bp.route("/ws-client")
 def serve_client():
     return render_template("client.html")
+
+@pose_bp.route("/predict")
+def serve_client():
+    return render_template("predict.html")
