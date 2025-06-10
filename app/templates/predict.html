@@ -1,418 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Posture Detection Upload</title>
+  <meta charset="UTF-8">
+  <title>Postur Detection Upload</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f8fafc;
-      margin: 0;
-      padding: 20px;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0; padding: 20px;
+      background: #f4f6f8; color: #333;
     }
-    h1, h2 {
+    h1 {
       color: #2563eb;
+      margin-bottom: 20px;
     }
+    .main {
+      display: flex; gap: 20px;
+    }
+    .panel {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      flex: 1;
+    }
+    .left { max-width: 400px; }
     .drop-zone {
       border: 2px dashed #2563eb;
-      border-radius: 10px;
+      border-radius: 8px;
       padding: 20px;
       text-align: center;
       color: #2563eb;
       cursor: pointer;
-      margin-bottom: 20px;
       min-height: 200px;
+      position: relative;
     }
+    .drop-zone.hover { background: #e0f0ff; }
     .drop-zone img,
     .drop-zone video {
-    max-width: 100%;
-    border-radius: 8px;
-    margin-top: 10px;
-    box-shadow: 0 0 0 2px #e0e7ff;
-    }
-    .drop-zone.hover {
-      background-color: #bfdbfe;
-    }
-    .preview {
       max-width: 100%;
-      height: auto;
-      margin-top: 20px;
-      display: block;
+      margin-top: 10px;
+      border-radius: 6px;
+      box-shadow: 0 0 0 2px #e0e7ff inset;
     }
-    .section {
-      margin-top: 20px;
-      padding: 20px;
-      background-color: #ffffff;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    .result img {
+      max-width: 100%;
+      border-radius: 6px;
+      margin-bottom: 15px;
     }
-    .summary-line {
-      margin: 5px 0;
-      padding: 3px 0;
+    .section-title {
+      color: #1e40af;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      font-size: 18px;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
       gap: 10px;
-      margin-top: 10px;
     }
-    .grid-item {
-      background-color: #e2e8f0;
-      border-radius: 6px;
+    .box {
+      background: #f1f5f9;
       padding: 10px;
-      text-align: center;
-      font-size: 14px;
-      position: relative;
-    }
-    .grid-item.warning {
-      background-color: #fde68a;
-      border: 2px solid #f59e0b;
-    }
-    .grid-item.warning::after {
-      content: '⚠ Default';
-      position: absolute;
-      bottom: 6px;
-      right: 6px;
-      font-size: 12px;
-      color: #92400e;
-    }
-    .group-title {
-      font-weight: bold;
-      margin-top: 20px;
-      font-size: 16px;
-      color: #1e40af;
-    }
-    .group {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    .value-box {
-      background-color: #f1f5f9;
       border-radius: 6px;
-      padding: 8px 12px;
-      flex: 1 1 150px;
-      box-shadow: 0 0 0 2px #2563eb inset;
+      text-align: center;
+      box-shadow: inset 0 0 0 2px #2563eb;
     }
-    .box-label {
-      font-size: 13px;
+    .box .label {
       font-weight: 600;
-      text-align: center;
       color: #1e293b;
+      margin-bottom: 4px;
     }
-    .box-value {
-      font-size: 20px;
-      font-weight: bold;
-      color: #0f172a;
-      text-align: center;
-      margin-top: 4px;
+    .box .value {
+      font-size: 20px; color: #0f172a;
     }
-    .feedback-box {
-      background-color: #f1f5f9;
-      border-radius: 6px;
-      padding: 10px 12px;
-      margin-bottom: 16px;
-      box-shadow: 0 0 0 2px #2563eb inset;
-    }
-    pre {
-      white-space: pre-wrap;
-      word-wrap: break-word;
-      background-color: #f1f5f9;
+    .feedback {
+      background: #f1f5f9;
       padding: 15px;
-      border-radius: 8px;
-      font-size: 14px;
-      border-left: 4px solid #3b82f6;
+      border-radius: 6px;
+      box-shadow: inset 0 0 0 2px #2563eb;
+      margin-top: 15px;
+      white-space: pre-wrap;
     }
-    .main-layout {
-    display: grid;
-    grid-template-columns: 1fr 2fr;
-    gap: 20px;
-    margin-top: 20px;
-    align-items: start;
-    }
-
-    .left-panel {
-    background-color: #ffffff;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    }
-
-    .right-panel {
-    min-height: 300px;
-    }
-
   </style>
 </head>
 <body>
-  <h1>Upload Gambar atau Video untuk Analisis Postur</h1>
+  <h1>Upload Gambar/Video untuk Analisis Postur</h1>
 
-    <div class="main-layout">
+  <div class="main">
     <!-- KIRI: Upload + Preview -->
-    <div class="left-panel">
-        <div id="dropZone" class="drop-zone">Klik atau Seret & Lepaskan file di sini</div>
-        <input type="file" id="fileInput" accept="image/*,video/*" style="display:none;" />
-        
-        <label style="display: block; margin-top: 10px;">
-        Jenis File:
-        <select id="fileTypeSwitch">
-            <option value="image">Gambar</option>
-            <option value="video">Video</option>
-        </select>
-        </label>
-        <button id="submitBtn" style="margin-top: 10px;">Analisis File</button>
-
-        <!-- Preview dalam drop zone -->
-        <div id="previewContainer"></div>
+    <div class="panel left">
+      <div id="dropZone" class="drop-zone">
+        Klik atau seret file ke sini
+      </div>
+      <input type="file" id="fileInput" accept="image/*,video/*" style="display:none">
     </div>
 
     <!-- KANAN: Hasil -->
-    <div id="resultDisplay" class="right-panel section"></div>
+    <div class="panel result" id="resultDisplay">
+      <!-- konten hasil akan muncul di sini -->
     </div>
+  </div>
 
   <script>
-    const dropZone = document.getElementById('dropZone');
-    const fileInput = document.getElementById('fileInput');
-    const fileTypeSwitch = document.getElementById('fileTypeSwitch');
-    const previewContainer = document.getElementById('previewContainer');
-    const resultDisplay = document.getElementById('resultDisplay');
+    const drop = document.getElementById('dropZone'),
+          fileIn = document.getElementById('fileInput'),
+          result = document.getElementById('resultDisplay');
+    let curr;
 
-    let currentFile = null;
-
-    // Drag and Drop
-    dropZone.addEventListener('click', () => fileInput.click());
-    dropZone.addEventListener('dragover', e => {
-      e.preventDefault();
-      dropZone.classList.add('hover');
+    drop.addEventListener('click', () => fileIn.click());
+    drop.addEventListener('dragover', e => { e.preventDefault(); drop.classList.add('hover'); });
+    drop.addEventListener('dragleave', () => drop.classList.remove('hover'));
+    drop.addEventListener('drop', e => {
+      e.preventDefault(); drop.classList.remove('hover');
+      if (e.dataTransfer.files[0]) selectFile(e.dataTransfer.files[0]);
     });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('hover'));
-    dropZone.addEventListener('drop', handleDrop);
+    fileIn.addEventListener('change', () => selectFile(fileIn.files[0]));
 
-    function handleDrop(e) {
-      e.preventDefault();
-      dropZone.classList.remove('hover');
-      const files = e.dataTransfer.files;
-      if (files.length > 0) {
-        handleFile(files[0]);
-      }
-    }
-
-    fileInput.addEventListener('change', () => {
-      if (fileInput.files.length > 0) {
-        handleFile(fileInput.files[0]);
-      }
-    });
-
-    function handleFile(file) {
-      currentFile = file;
+    function selectFile(file) {
+      curr = file;
       const type = file.type.startsWith('image/') ? 'image' : 'video';
-      fileTypeSwitch.value = type;
-
-      dropZone.innerHTML = '';
+      drop.innerHTML = '';
       const reader = new FileReader();
       reader.onload = () => {
-        if (type === 'image') {
-          const img = document.createElement('img');
-          img.src = reader.result;
-          img.className = 'preview';
-          dropZone.appendChild(img);
-        } else {
-          const video = document.createElement('video');
-          video.src = reader.result;
-          video.controls = true;
-          video.className = 'preview';
-          previewContainer.appendChild(video);
-        }
+        const el = type === 'image' ? document.createElement('img') : document.createElement('video');
+        el.src = reader.result;
+        if (type === 'video') el.controls = true;
+        drop.appendChild(el);
+        callAPI(type);
       };
       reader.readAsDataURL(file);
     }
 
-    fileTypeSwitch.addEventListener('change', () => {
-      if (currentFile) {
-        handleFile(currentFile);
-      }
-    });
-
-    document.getElementById('submitBtn').addEventListener('click', () => {
-        submitFile();
-    });
-
-    // Submit to Server
-    async function submitFile() {
-      const formData = new FormData();
-      
-      const isImage = fileTypeSwitch.value === 'image';
-      isImage ? formData.append('image', currentFile) : formData.append('video', currentFile);
-      const url = isImage
-        ? 'https://vps.danar.site/model1/predict/image' 
-        : 'https://vps.danar.site/model1/predict/video'; 
-
+    async function callAPI(type) {
+      result.innerHTML = `<p>Menganalisis... mohon tunggu.</p>`;
+      const fd = new FormData();
+      fd.append(type, curr);
       try {
-        const res = await fetch(url, {
-          method: 'POST',
-          body: formData,
+        const res = await fetch(`https://vps.danar.site/model1/predict/${type}`, {
+          method: 'POST', body: fd
         });
-
         const data = await res.json();
-
-        if (!isImage) {
-          pollVideoResult(data.job_id);
-        } else {
-          renderImageResult(data.result);
-        }
-      } catch (err) {
-        console.error(err);
-        resultDisplay.textContent = 'Terjadi kesalahan saat mengirim file.';
+        if (type === 'image') renderImage(data.result);
+        else pollVideo(data.job_id);
+      } catch {
+        result.innerHTML = `<p style="color:red;">Error saat upload.</p>`;
       }
     }
 
-    async function pollVideoResult(jobId) {
-      resultDisplay.innerHTML = `<p>Menunggu hasil... (Job ID: ${jobId})</p>`;
-      const interval = setInterval(async () => {
-        const res = await fetch(`https://vps.danar.site/model1/predict/video/result?job_id=${jobId}`);
-        const data = await res.json();
-        if (data.status === 'done') {
-          clearInterval(interval);
-          renderVideoResult(data.result);
+    async function pollVideo(jobId) {
+      result.innerHTML = `<p>Menunggu hasil video...</p>`;
+      const intv = setInterval(async ()=>{
+        const r = await fetch(`https://vps.danar.site/model1/predict/video/result?job_id=${jobId}`);
+        const j = await r.json();
+        if (j.status === 'done') {
+          clearInterval(intv);
+          renderVideo(j.result);
         }
-      }, 3000);
+      }, 2000);
     }
 
-    function createBox(label, value) {
-      const div = document.createElement("div");
-      div.className = "value-box";
-      div.innerHTML = `
-        <div class="box-label">${label}</div>
-        <div class="box-value">${value}</div>
-      `;
+    function renderImage(r) {
+      result.innerHTML = '';
+
+      const img = document.createElement('img');
+      img.src = r.gambar_path;
+      result.appendChild(img);
+
+      result.append(infoSection(r, false));
+    }
+
+    function renderVideo(r) {
+      result.innerHTML = '';
+
+      const img = document.createElement('img');
+      img.src = r.representative_image;
+      result.appendChild(img);
+
+      result.append(infoSection(r, true));
+    }
+
+    function infoSection(r, isVideo) {
+      const frag = document.createDocumentFragment();
+
+      const hdrFeedback = document.createElement('div');
+      hdrFeedback.className = 'feedback';
+      hdrFeedback.textContent = isVideo ? r.most_common_feedback : r.feedback;
+      frag.appendChild(hdrFeedback);
+
+      const reba = SectionGrid('REBA', isVideo ? r.average_scores : r);
+      const rula = SectionGrid('RULA', isVideo ? r.average_scores : r);
+      frag.appendChild(reba);
+      frag.appendChild(rula);
+
+      // Sudut details
+      const sud = isVideo ? r.average_sudut : r.details;
+      const sudDiv = document.createElement('div');
+      sudDiv.innerHTML = `<div class="section-title">Rata‑Rata Sudut Tubuh:</div>`;
+      const gd = document.createElement('div'); gd.className = 'grid';
+      ['bahu','leher','lutut','punggung','siku','pergelangan'].forEach(k=>{
+        const kb = k.charAt(0).toUpperCase()+k.slice(1);
+        const vb = sud[`sudut_${k}`].toFixed(1)+'°';
+        const box = document.createElement('div'); box.className='box';
+        box.innerHTML = `<div class="label">${kb}</div><div class="value">${vb}</div>`;
+        gd.appendChild(box);
+      });
+      sudDiv.appendChild(gd);
+      frag.appendChild(sudDiv);
+
+      // Summary teks
+      const sum = isVideo ? r.summary : `${r.summary.reba_summary}\n${r.summary.rula_summary}`;
+      const sb = document.createElement('div');
+      sb.className = 'feedback';
+      sb.textContent = sum;
+      frag.appendChild(sb);
+
+      return frag;
+    }
+
+    function SectionGrid(title, data) {
+      const cont = document.createDocumentFragment();
+      const div = document.createElement('div');
+      div.innerHTML = `<div class="section-title">${title}</div>`;
+      const gd = document.createElement('div'); gd.className = 'grid';
+      const keys = ['upper_arm','lower_arm','wrist','neck','trunk','leg','final'];
+      keys.forEach(k=>{
+        const label = k.split('_').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ');
+        const val = data[`${title.toLowerCase()}_${k}_score`].toFixed(1);
+        const box = document.createElement('div'); box.className='box';
+        box.innerHTML = `<div class="label">${label}</div><div class="value">${val}</div>`;
+        gd.appendChild(box);
+      });
+      div.appendChild(gd);
       return div;
     }
 
-    function renderAngleGrid(details, flags) {
-      const angleGrid = document.createElement('div');
-      angleGrid.className = 'grid';
-      const angles = [
-        'sudut_bahu', 'sudut_leher', 'sudut_lutut',
-        'sudut_punggung', 'sudut_siku', 'sudut_pergelangan'
-      ];
-      angles.forEach(key => {
-        const div = document.createElement('div');
-        div.className = 'grid-item';
-        if (flags[key]) div.classList.add('warning');
-        div.innerHTML = `<strong>${key.replace('sudut_', '').toUpperCase()}</strong><br>${details[key].toFixed(1)}°`;
-        angleGrid.appendChild(div);
-      });
-      return angleGrid;
-    }
-
-    function renderImageResult(result) {
-      resultDisplay.innerHTML = '';
-
-      const feedback = document.createElement('div');
-      feedback.className = 'feedback-box';
-      feedback.innerText = result.feedback || 'Tidak ada feedback';
-
-      const rebaGroup = document.createElement('div');
-      rebaGroup.className = 'group';
-      rebaGroup.innerHTML = '<div class="group-title">REBA</div>';
-      ['Upper Arm', 'Lower Arm', 'Wrist', 'Neck', 'Trunk', 'Leg', 'Final'].forEach(key => {
-        rebaGroup.appendChild(createBox(
-          key,
-          result[`reba_${key.toLowerCase().replace(' ', '_')}_score`]
-        ));
-      });
-
-      const rulaGroup = document.createElement('div');
-      rulaGroup.className = 'group';
-      rulaGroup.innerHTML = '<div class="group-title">RULA</div>';
-      ['Upper Arm', 'Lower Arm', 'Wrist', 'Neck', 'Trunk', 'Leg', 'Final'].forEach(key => {
-        rulaGroup.appendChild(createBox(
-          key,
-          result[`rula_${key.toLowerCase().replace(' ', '_')}_score`]
-        ));
-      });
-
-      const adjustGroup = document.createElement('div');
-      adjustGroup.className = 'group';
-      adjustGroup.innerHTML = '<div class="group-title">Adjustment</div>';
-      Object.entries({
-        "Shoulder Up": result.details.adjust_shoulder_raised,
-        "Arm Support": result.details.adjust_arm_supported,
-        "Neck Twist": result.details.adjust_neck_twist,
-        "Trunk Twist": result.details.adjust_trunk_twist,
-        "Wrist Twist": result.details.adjust_wrist_twist,
-        "Legs Support": result.details.adjust_legs_feet,
-      }).forEach(([k, v]) => {
-        adjustGroup.appendChild(createBox(k, v));
-      });
-
-      const angleGrid = renderAngleGrid(result.details, result.default_value_flags);
-
-      const summaryLine = document.createElement('pre');
-      summaryLine.innerText = `
-Feedback Umum:
-${result.summary.reba_summary}
-
-Ringkasan RULA:
-${result.summary.rula_summary}
-`;
-
-      resultDisplay.append(feedback, rebaGroup, rulaGroup, adjustGroup, angleGrid, summaryLine);
-    }
-
-    function renderVideoResult(result) {
-      resultDisplay.innerHTML = '';
-
-      const feedback = document.createElement('div');
-      feedback.className = 'feedback-box';
-      feedback.innerText = result.most_common_feedback || 'Tidak ada feedback';
-
-      const rebaGroup = document.createElement('div');
-      rebaGroup.className = 'group';
-      rebaGroup.innerHTML = '<div class="group-title">REBA (Rata-rata)</div>';
-      ['Final', 'Upper Arm', 'Lower Arm', 'Wrist', 'Neck', 'Trunk', 'Leg'].forEach(key => {
-        rebaGroup.appendChild(createBox(
-          key,
-          result.average_scores[`reba_${key.toLowerCase().replace(' ', '_')}_score`]
-        ));
-      });
-
-      const rulaGroup = document.createElement('div');
-      rulaGroup.className = 'group';
-      rulaGroup.innerHTML = '<div class="group-title">RULA (Rata-rata)</div>';
-      ['Final', 'Upper Arm', 'Lower Arm', 'Wrist', 'Neck', 'Trunk', 'Leg'].forEach(key => {
-        rulaGroup.appendChild(createBox(
-          key,
-          result.average_scores[`rula_${key.toLowerCase().replace(' ', '_')}_score`]
-        ));
-      });
-
-      const angleGrid = renderAngleGrid(result.average_sudut, {});
-
-      const summaryLine = document.createElement('pre');
-      summaryLine.innerText = `
-Feedback Umum:
-${result.most_common_feedback}
-
-Ringkasan REBA:
-${result.reba_summary}
-
-Ringkasan RULA:
-${result.rula_summary}
-
-Rata-rata Sudut Tubuh:
-- Bahu: ${result.average_sudut.sudut_bahu}°
-- Siku: ${result.average_sudut.sudut_siku}°
-- Leher: ${result.average_sudut.sudut_leher}°
-- Lutut: ${result.average_sudut.sudut_lutut}°
-- Punggung: ${result.average_sudut.sudut_punggung}°
-- Pergelangan: ${result.average_sudut.sudut_pergelangan}°
-`;
-
-      resultDisplay.append(feedback, rebaGroup, rulaGroup, angleGrid, summaryLine);
-    }
   </script>
 </body>
 </html>
