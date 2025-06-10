@@ -212,7 +212,7 @@
     // Submit to Server
     async function submitFile() {
       const formData = new FormData();
-      formData.append('file', currentFile);
+      formData.append('image', currentFile);
 
       const isImage = fileTypeSwitch.value === 'image';
       const url = isImage
