@@ -212,9 +212,9 @@
     // Submit to Server
     async function submitFile() {
       const formData = new FormData();
-      formData.append('image', currentFile);
-
+      
       const isImage = fileTypeSwitch.value === 'image';
+      isImage ? formData.append('image', currentFile) : formData.append('video', currentFile);
       const url = isImage
         ? 'https://vps.danar.site/model1/predict/image' 
         : 'https://vps.danar.site/model1/predict/video'; 
