@@ -80,6 +80,6 @@ def get_summary():
 def serve_client():
     return render_template("client.html")
 
-@pose_bp.route("/predict")
+@pose_bp.route("/client")
 def serve_client():
     return render_template("predict.html")
