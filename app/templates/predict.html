@@ -134,6 +134,7 @@
       <option value="video">Video</option>
     </select>
   </label>
+  <button id="submitBtn">Analisis File</button>
 
   <!-- Preview -->
   <div id="previewContainer"></div>
@@ -202,6 +203,10 @@
       if (currentFile) {
         handleFile(currentFile);
       }
+    });
+
+    document.getElementById('submitBtn').addEventListener('click', () => {
+        submitFile();
     });
 
     // Submit to Server
