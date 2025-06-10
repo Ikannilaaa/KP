@@ -10,6 +10,9 @@
       margin: 0;
       padding: 20px;
       color: #333;
+      display: grid;
+      grid-template-columns: 1fr 3fr; /* Kolom kiri (drop zone) dan kolom kanan (hasil) */
+      gap: 20px;
     }
     h1, h2 {
       color: #2563eb;
@@ -117,29 +120,37 @@
       font-size: 14px;
       border-left: 4px solid #3b82f6;
     }
+    #resultDisplay {
+      overflow-y: auto;
+      max-height: 80vh;
+    }
   </style>
 </head>
 <body>
   <h1>Upload Gambar atau Video untuk Analisis Postur</h1>
 
-  <!-- File Upload -->
-  <div id="dropZone" class="drop-zone">Klik atau Seret & Lepaskan file di sini</div>
-  <input type="file" id="fileInput" accept="image/*,video/*" style="display:none;" />
+  <!-- File Upload (Kolom Kiri) -->
+  <div style="display: flex; flex-direction: column; gap: 20px;">
+    <div id="dropZone" class="drop-zone">Klik atau Seret & Lepaskan file di sini</div>
+    <input type="file" id="fileInput" accept="image/*,video/*" style="display:none;" />
 
-  <!-- File Type Switch -->
-  <label>
-    Jenis File:
-    <select id="fileTypeSwitch">
-      <option value="image">Gambar</option>
-      <option value="video">Video</option>
-    </select>
-  </label>
-  <button id="submitBtn">Analisis File</button>
+    <!-- File Type Switch -->
+    <label>
+      Jenis File:
+      <select id="fileTypeSwitch">
+        <option value="image">Gambar</option>
+        <option value="video">Video</option>
+      </select>
+    </label>
 
-  <!-- Preview -->
-  <div id="previewContainer"></div>
+    <!-- Preview -->
+    <div id="previewContainer"></div>
 
-  <!-- Result Display -->
+    <!-- Submit Button -->
+    <button id="submitBtn">Analisis File</button>
+  </div>
+
+  <!-- Result Display (Kolom Kanan) -->
   <div id="resultDisplay" class="section"></div>
 
   <script>
@@ -148,7 +159,6 @@
     const fileTypeSwitch = document.getElementById('fileTypeSwitch');
     const previewContainer = document.getElementById('previewContainer');
     const resultDisplay = document.getElementById('resultDisplay');
-
     let currentFile = null;
 
     // Drag and Drop
@@ -206,13 +216,12 @@
     });
 
     document.getElementById('submitBtn').addEventListener('click', () => {
-        submitFile();
+      submitFile();
     });
 
     // Submit to Server
     async function submitFile() {
       const formData = new FormData();
-      
       const isImage = fileTypeSwitch.value === 'image';
       isImage ? formData.append('image', currentFile) : formData.append('video', currentFile);
       const url = isImage
@@ -224,7 +233,6 @@
           method: 'POST',
           body: formData,
         });
-
         const data = await res.json();
 
         if (!isImage) {
