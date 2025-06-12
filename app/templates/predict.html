@@ -167,6 +167,7 @@
       result.appendChild(img);
 
       result.append(infoSection(r, false));
+      result.appendChild(renderAdjustments(r.details));
     }
 
     function renderVideo(r) {
@@ -177,6 +178,33 @@
       result.appendChild(img);
 
       result.append(infoSection(r, true));
+    }
+
+    function renderAdjustments(details) {
+      const adjDiv = document.createElement('div');
+      adjDiv.innerHTML = `<div class="section-title">Adjustment Faktor:</div>`;
+      const gd = document.createElement('div'); gd.className = 'grid';
+
+      const adjKeys = {
+        adjust_arm_supported: 'Arm Supported',
+        adjust_legs_feet: 'Legs/Feet',
+        adjust_neck_twist: 'Neck Twist',
+        adjust_shoulder_raised: 'Shoulder Raised',
+        adjust_trunk_twist: 'Trunk Twist',
+        adjust_wrist_twist: 'Wrist Twist'
+      };
+
+      Object.keys(adjKeys).forEach(k => {
+        const v = details[k];
+        const box = document.createElement('div'); box.className = 'box';
+        const label = adjKeys[k];
+        const val = (v === -1) ? 'Tidak' : (v === 0 ? 'Normal' : 'Ya');
+        box.innerHTML = `<div class="label">${label}</div><div class="value">${val}</div>`;
+        gd.appendChild(box);
+      });
+
+      adjDiv.appendChild(gd);
+      return adjDiv;
     }
 
     function infoSection(r, isVideo) {
