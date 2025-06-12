@@ -367,7 +367,7 @@
 
         const job_value = document.createElement('div');
         job_value.className = 'section-title';
-        job_value.textContent = 'Feedback Deteksi Postur';
+        job_value.textContent = 'Job ID';
 
         const copyButton = document.createElement('button');
         copyButton.title = 'Salin Feedback';
@@ -396,13 +396,41 @@
         frag.appendChild(jobDiv);
       }
 
+      // Buat container untuk judul dan tombol copy
+      const feedbackHeaderContainer = document.createElement('div');
+      feedbackHeaderContainer.style.display = 'flex';
+      feedbackHeaderContainer.style.alignItems = 'center';
+      feedbackHeaderContainer.style.gap = '8px';
+
       const feedbackTitle = document.createElement('div');
       feedbackTitle.className = 'section-title';
       feedbackTitle.textContent = 'Feedback Deteksi Postur';
-      frag.appendChild(feedbackTitle);
 
+      // Buat tombol copy
+      const copyFeedbackButton = document.createElement('button');
+      copyFeedbackButton.title = 'Salin Feedback';
+      copyFeedbackButton.style.background = 'none';
+      copyFeedbackButton.style.border = 'none';
+      copyFeedbackButton.style.cursor = 'pointer';
+      copyFeedbackButton.onclick = () => copySwalTextById('feedbackText');
+
+      copyFeedbackButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="#2563eb" viewBox="0 0 24 24">
+          <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v16h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 18H8V7h11v16Z"/>
+        </svg>
+      `;
+
+      // Tambahkan title dan tombol ke container
+      feedbackHeaderContainer.appendChild(feedbackTitle);
+      feedbackHeaderContainer.appendChild(copyFeedbackButton);
+
+      // Masukkan ke dalam frag
+      frag.appendChild(feedbackHeaderContainer);
+
+      // Buat elemen feedback yang bisa disalin
       const hdrFeedback = document.createElement('div');
       hdrFeedback.className = 'feedback';
+      hdrFeedback.id = 'feedbackText'; // ID ini digunakan oleh fungsi salin
       hdrFeedback.textContent = isVideo ? r.most_common_feedback : r.feedback;
       frag.appendChild(hdrFeedback);
 
