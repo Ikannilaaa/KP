@@ -198,7 +198,7 @@
         const v = details[k];
         const box = document.createElement('div'); box.className = 'box';
         const label = adjKeys[k];
-        const val = (v === -1) ? 'Tidak' : (v === 0 ? 'Normal' : 'Ya');
+        const val = (v === -1) ? 'Ya' : (v === 0 ? 'Tidak' : 'Ya'); 
         box.innerHTML = `<div class="label">${label}</div><div class="value">${val}</div>`;
         gd.appendChild(box);
       });
@@ -209,6 +209,11 @@
 
     function infoSection(r, isVideo) {
       const frag = document.createDocumentFragment();
+
+      const feedbackTitle = document.createElement('div');
+      feedbackTitle.className = 'section-title';
+      feedbackTitle.textContent = 'Feedback Deteksi Postur';
+      frag.appendChild(feedbackTitle);
 
       const hdrFeedback = document.createElement('div');
       hdrFeedback.className = 'feedback';
@@ -234,6 +239,10 @@
       });
       sudDiv.appendChild(gd);
       frag.appendChild(sudDiv);
+
+      if (!isVideo && r.details) {
+        frag.appendChild(renderAdjustments(r.details));
+      }
 
       // Summary teks
       const sum = isVideo ? r.summary : `${r.summary.reba_summary}\n${r.summary.rula_summary}`;
