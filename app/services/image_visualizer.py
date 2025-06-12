@@ -4,7 +4,7 @@ import numpy as np
 from datetime import datetime
 
 def get_color_by_score(score):
-    if score == 1:
+    if score <= 1:
         return (0, 255, 0)      # Green
     elif score == 2:
         return (173, 255, 47)   # Yellow-green
@@ -34,9 +34,6 @@ def get_risk_label(score):
 def generate_pose_visualization(image_bytes, keypoints, hasil_prediksi, is_flipped):
     nparr = np.frombuffer(image_bytes, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    print(keypoints)
-    print("++++++")
-    print(hasil_prediksi)
 
     blank_space_width = 180
     blank = np.ones((img.shape[0], blank_space_width, 3), dtype=np.uint8) * 255
