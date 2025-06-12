@@ -81,6 +81,16 @@
       margin-top: 15px;
       white-space: pre-wrap;
     }
+    .center-message {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      min-height: 300px;
+      text-align: center;
+      font-size: 16px;
+      color: #1e293b;
+    }
   </style>
 </head>
 <body>
@@ -132,7 +142,7 @@
     }
 
     async function callAPI(type) {
-      result.innerHTML = `<p>Menganalisis... mohon tunggu.</p>`;
+      result.innerHTML = `<div class="center-message">Menganalisis... mohon tunggu.</div>`;
       const fd = new FormData();
       fd.append(type, curr);
       try {
@@ -143,7 +153,7 @@
         if (type === 'image') renderImage(data.result);
         else pollVideo(data.job_id);
       } catch {
-        result.innerHTML = `<p style="color:red;">Error saat upload.</p>`;
+        result.innerHTML = `<div class="center-message" style="color:red;">Error saat upload.</div>`;
       }
     }
 
