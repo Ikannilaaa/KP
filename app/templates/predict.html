@@ -229,8 +229,8 @@
       hdrFeedback.textContent = isVideo ? r.most_common_feedback : r.feedback;
       frag.appendChild(hdrFeedback);
 
-      const reba = SectionGrid('REBA', isVideo ? r.average_scores : r);
-      const rula = SectionGrid('RULA', isVideo ? r.average_scores : r);
+      const reba = SectionGrid(isVideo ? 'Rata-Rata REBA' : 'REBA', isVideo ? r.average_scores : r);
+      const rula = SectionGrid(isVideo ? 'Rata-Rata RULA' : 'RULA', isVideo ? r.average_scores : r);
       frag.appendChild(reba);
       frag.appendChild(rula);
 
