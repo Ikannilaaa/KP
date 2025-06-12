@@ -111,6 +111,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
     const drop = document.getElementById('dropZone'),
           fileIn = document.getElementById('fileInput'),
@@ -125,6 +126,25 @@
       if (e.dataTransfer.files[0]) selectFile(e.dataTransfer.files[0]);
     });
     fileIn.addEventListener('change', () => selectFile(fileIn.files[0]));
+
+    function copySwalTextById(elementId, label = "Teks") {
+      const text = document.getElementById(elementId)?.innerText || '';
+      if (!text) return;
+
+      navigator.clipboard.writeText(text).then(() => {
+        Swal.fire({
+          title: `${label} disalin!`,
+          toast: true,
+          position: 'top-end',
+          icon: 'success',
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          background: '#1f2937',
+          color: '#ffffff',
+        });
+      });
+    }
 
     function selectFile(file) {
       curr = file;
@@ -340,23 +360,38 @@
     function infoSection(r, isVideo) {
       const frag = document.createDocumentFragment();
       if (isVideo && r.job_id) {
-        const job_value = document.createElement('div');
-        job_value.className = 'section-title';
-        job_value.textContent = 'Feedback Deteksi Postur';
-        frag.appendChild(job_value);
-        const jobDiv = document.createElement('div');
-        jobDiv.className = 'feedback';
-        jobDiv.textContent = `${r.job_id}`;
-        frag.appendChild(jobDiv);
+        const sidTitle = document.createElement('div');
+        sidTitle.className = 'section-title';
+        sidTitle.innerHTML = `
+          Job ID 
+          <button onclick="copySwalTextById('jobIdBox', 'Job ID')" title="Copy Job ID" style="background: none; border: none; cursor: pointer;">
+            <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="#2563eb" viewBox="0 0 24 24">
+              <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v16h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 18H8V7h11v16Z"/>
+            </svg>
+          </button>`;
+        frag.appendChild(sidTitle);
+
+        const sidBox = document.createElement('div');
+        sidBox.className = 'feedback';
+        sidBox.id = 'jobIdBox';
+        sidBox.textContent = r.job_id;
+        frag.appendChild(sidBox);
       }
 
       const feedbackTitle = document.createElement('div');
       feedbackTitle.className = 'section-title';
-      feedbackTitle.textContent = 'Feedback Deteksi Postur';
+      feedbackTitle.innerHTML = `
+        Feedback Deteksi Postur 
+        <button onclick="copySwalTextById('feedbackBox', 'Feedback')" title="Copy Feedback" style="background: none; border: none; cursor: pointer;">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="#2563eb" viewBox="0 0 24 24">
+            <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v16h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 18H8V7h11v16Z"/>
+          </svg>
+        </button>`;
       frag.appendChild(feedbackTitle);
 
       const hdrFeedback = document.createElement('div');
       hdrFeedback.className = 'feedback';
+      hdrFeedback.id = 'feedbackBox';
       hdrFeedback.textContent = isVideo ? r.most_common_feedback : r.feedback;
       frag.appendChild(hdrFeedback);
 
@@ -395,12 +430,18 @@
 
       const feedback_rula_rebaTitle = document.createElement('div');
       feedback_rula_rebaTitle.className = 'section-title';
-      feedback_rula_rebaTitle.textContent = 'Feedback Rula & Reba';
+      feedback_rula_rebaTitle.innerHTML = `
+        Feedback Rula & Reba 
+        <button onclick="copySwalTextById('summaryBox', 'Feedback Rula & Reba')" title="Copy Feedback Rula & Reba" style="background: none; border: none; cursor: pointer;">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="#2563eb" viewBox="0 0 24 24">
+            <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v16h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 18H8V7h11v16Z"/>
+          </svg>
+        </button>`;
       frag.appendChild(feedback_rula_rebaTitle);
-      // Summary teks
-      const sum = isVideo ? renderSummaryToText(r) : `REBA: ${r.summary.reba_summary}\nRULA: ${r.summary.rula_summary}`;
+
       const sb = document.createElement('div');
       sb.className = 'feedback';
+      sb.id = 'summaryBox';
       sb.textContent = sum;
       frag.appendChild(sb);
 
