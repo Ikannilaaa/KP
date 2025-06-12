@@ -229,8 +229,8 @@
       hdrFeedback.textContent = isVideo ? r.most_common_feedback : r.feedback;
       frag.appendChild(hdrFeedback);
 
-      const reba = SectionGrid(isVideo ? 'Rata-Rata REBA' : 'REBA', isVideo ? r.average_scores : r);
-      const rula = SectionGrid(isVideo ? 'Rata-Rata RULA' : 'RULA', isVideo ? r.average_scores : r);
+      const reba = SectionGrid('REBA', isVideo ? r.average_scores : r, isVideo);
+      const rula = SectionGrid('RULA', isVideo ? r.average_scores : r, isVideo);
       frag.appendChild(reba);
       frag.appendChild(rula);
 
@@ -267,10 +267,10 @@
       return frag;
     }
 
-    function SectionGrid(title, data) {
+    function SectionGrid(title, data, isVideo) {
       const cont = document.createDocumentFragment();
       const div = document.createElement('div');
-      div.innerHTML = `<div class="section-title">${title}</div>`;
+      div.innerHTML = isVideo ? `<div class="section-title">Rata-Rata ${title}</div>` : `<div class="section-title">${title}</div>`;
       const gd = document.createElement('div'); gd.className = 'grid';
       const keys = ['upper_arm','lower_arm','wrist','neck','trunk','leg','final'];
       keys.forEach(k=>{
