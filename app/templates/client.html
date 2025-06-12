@@ -552,12 +552,17 @@
 		}
 
         socket.on('disconnect', () => {
-        statusText.textContent = "Status: Disconnected";
-		connectBtn.disabled = false;
-		disconnectBtn.disabled = true;
-        if (captureInterval) clearInterval(captureInterval);
+			statusText.textContent = "Status: Disconnected";
+			connectBtn.disabled = false;
+			disconnectBtn.disabled = true;
+			if (captureInterval) clearInterval(captureInterval);
+			if (userSID) {
+				summaryDisplay.textContent = 'Menunggu hasil ringkasan...';
+				pollSummaryBySID(userSID);
+			}
+        });
 
-        async function pollSummaryBySID(userSID) {
+		async function pollSummaryBySID(userSID) {
 			const intv = setInterval(async () => {
 				try {
 					const res = await fetch(`https://vps.danar.site/model1/websocket/summary?sid=${userSID}`);
@@ -574,9 +579,8 @@
 					clearInterval(intv);
 					summaryDisplay.textContent = `Terjadi kesalahan saat mengambil summary.`;
 				}
-			}, 1000); // cek setiap 1 detik
+			}, 1000);
 		}
-        });
     };
 
     document.getElementById('disconnectBtn').onclick = () => {
