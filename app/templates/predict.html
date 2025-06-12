@@ -158,7 +158,7 @@
     }
 
     async function pollVideo(jobId) {
-      result.innerHTML = `<div class="center-message">Menunggu hasil video...</div>`;
+      result.innerHTML = `<div class="center-message">Menunggu hasil video dengan Job ID: ${jobId}</div>`;
       const intv = setInterval(async ()=>{
         const r = await fetch(`https://vps.danar.site/model1/predict/video/result?job_id=${jobId}`);
         const j = await r.json();
