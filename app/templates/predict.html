@@ -236,6 +236,45 @@
       return div;
     }
 
+    function renderSummaryToText(s) {
+			return (
+				`Summary dari ${s.total_frames} frame:\n\n` +
+
+				`Feedback Umum:\n${s.most_common_feedback}\n\n` +
+
+				`Rangkuman Analisis:\n${s.summary}\n` +
+
+				`Rata-rata Skor REBA:\n` +
+				`  Final:        ${s.average_scores.reba_final_score}\n` +
+				`  Upper Arm:    ${s.average_scores.reba_upper_arm_score}\n` +
+				`  Lower Arm:    ${s.average_scores.reba_lower_arm_score}\n` +
+				`  Wrist:        ${s.average_scores.reba_wrist_score}\n` +
+				`  Neck:         ${s.average_scores.reba_neck_score}\n` +
+				`  Trunk:        ${s.average_scores.reba_trunk_score}\n` +
+				`  Legs:         ${s.average_scores.reba_leg_score}\n\n` +
+
+				`Rata-rata Skor RULA:\n` +
+				`  Final:        ${s.average_scores.rula_final_score}\n` +
+				`  Upper Arm:    ${s.average_scores.rula_upper_arm_score}\n` +
+				`  Lower Arm:    ${s.average_scores.rula_lower_arm_score}\n` +
+				`  Wrist:        ${s.average_scores.rula_wrist_score}\n` +
+				`  Neck:         ${s.average_scores.rula_neck_score}\n` +
+				`  Trunk:        ${s.average_scores.rula_trunk_score}\n` +
+				`  Legs:         ${s.average_scores.rula_leg_score}\n\n` +
+
+				`Rata-rata Sudut Tubuh:\n` +
+				`  Bahu:         ${s.average_sudut.sudut_bahu}°\n` +
+				`  Siku:         ${s.average_sudut.sudut_siku}°\n` +
+				`  Leher:        ${s.average_sudut.sudut_leher}°\n` +
+				`  Lutut:        ${s.average_sudut.sudut_lutut}°\n` +
+				`  Punggung:     ${s.average_sudut.sudut_punggung}°\n` +
+				`  Pergelangan:  ${s.average_sudut.sudut_pergelangan}°\n\n` +
+
+				`Ringkasan REBA: ${s.reba_summary}\n` +
+				`Ringkasan RULA: ${s.rula_summary}`
+			);
+		}
+
     function infoSection(r, isVideo) {
       const frag = document.createDocumentFragment();
       if (isVideo && r.job_id) {
@@ -297,7 +336,7 @@
       feedback_rula_rebaTitle.textContent = 'Feedback Rula & Reba';
       frag.appendChild(feedback_rula_rebaTitle);
       // Summary teks
-      const sum = isVideo ? r.summary : `REBA: ${r.summary.reba_summary}\nRULA: ${r.summary.rula_summary}`;
+      const sum = isVideo ? renderSummaryToText(r) : `REBA: ${r.summary.reba_summary}\nRULA: ${r.summary.rula_summary}`;
       const sb = document.createElement('div');
       sb.className = 'feedback';
       sb.textContent = sum;
