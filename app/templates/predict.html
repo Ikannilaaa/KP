@@ -360,12 +360,38 @@
     function infoSection(r, isVideo) {
       const frag = document.createDocumentFragment();
       if (isVideo && r.job_id) {
+        const sectionContainer = document.createElement('div');
+        sectionContainer.style.display = 'flex';
+        sectionContainer.style.alignItems = 'center';
+        sectionContainer.style.gap = '8px'; // Jarak antara teks dan tombol
+
         const job_value = document.createElement('div');
         job_value.className = 'section-title';
         job_value.textContent = 'Feedback Deteksi Postur';
-        frag.appendChild(job_value);
+
+        const copyButton = document.createElement('button');
+        copyButton.title = 'Salin Feedback';
+        copyButton.onclick = () => copySwalTextById(`jobId_${r.job_id}`);
+        copyButton.style.background = 'none';
+        copyButton.style.border = 'none';
+        copyButton.style.cursor = 'pointer';
+
+        copyButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="#2563eb" viewBox="0 0 24 24">
+            <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v16h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 18H8V7h11v16Z"/>
+          </svg>
+        `;
+
+        // Masukkan teks dan tombol ke dalam sectionContainer
+        sectionContainer.appendChild(job_value);
+        sectionContainer.appendChild(copyButton);
+
+        // Tambahkan ke DOM
+        frag.appendChild(sectionContainer);
+
         const jobDiv = document.createElement('div');
         jobDiv.className = 'feedback';
+        jobDiv.id = `jobId_${r.job_id}`; // tambahkan id untuk bisa disalin
         jobDiv.textContent = `${r.job_id}`;
         frag.appendChild(jobDiv);
       }
