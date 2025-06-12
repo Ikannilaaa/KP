@@ -164,6 +164,7 @@
         const j = await r.json();
         if (j.status === 'done') {
           clearInterval(intv);
+          j.result.job_id = jobId; 
           renderVideo(j.result);
         }
       }, 2000);
@@ -237,6 +238,12 @@
 
     function infoSection(r, isVideo) {
       const frag = document.createDocumentFragment();
+      if (isVideo && r.job_id) {
+        const jobDiv = document.createElement('div');
+        jobDiv.className = 'feedback';
+        jobDiv.textContent = `Job ID: ${r.job_id}`;
+        frag.appendChild(jobDiv);
+      }
 
       const feedbackTitle = document.createElement('div');
       feedbackTitle.className = 'section-title';
