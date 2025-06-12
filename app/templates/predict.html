@@ -239,9 +239,13 @@
     function infoSection(r, isVideo) {
       const frag = document.createDocumentFragment();
       if (isVideo && r.job_id) {
+        const job_value = document.createElement('div');
+        job_value.className = 'section-title';
+        job_value.textContent = 'Feedback Deteksi Postur';
+        frag.appendChild(job_value);
         const jobDiv = document.createElement('div');
         jobDiv.className = 'feedback';
-        jobDiv.textContent = `Job ID: ${r.job_id}`;
+        jobDiv.textContent = `${r.job_id}`;
         frag.appendChild(jobDiv);
       }
 
