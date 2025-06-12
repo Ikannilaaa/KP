@@ -34,6 +34,7 @@ def get_risk_label(score):
 def generate_pose_visualization(image_bytes, keypoints, hasil_prediksi, is_flipped):
     nparr = np.frombuffer(image_bytes, np.uint8)
     img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    print(keypoints)
 
     blank_space_width = 180
     blank = np.ones((img.shape[0], blank_space_width, 3), dtype=np.uint8) * 255
