@@ -227,7 +227,7 @@
       // Sudut details
       const sud = isVideo ? r.average_sudut : r.details;
       const sudDiv = document.createElement('div');
-      sudDiv.innerHTML = `<div class="section-title">Rata‑Rata Sudut Tubuh:</div>`;
+      sudDiv.innerHTML = isVideo ? `<div class="section-title">Rata-Rata Sudut Tubuh:</div>` : `<div class="section-title">Sudut Tubuh:</div>`;
       const gd = document.createElement('div'); gd.className = 'grid';
       ['bahu','leher','lutut','punggung','siku','pergelangan'].forEach(k=>{
         const kb = k.charAt(0).toUpperCase()+k.slice(1);
@@ -248,7 +248,7 @@
       feedback_rula_rebaTitle.textContent = 'Feedback Rula & Reba';
       frag.appendChild(feedback_rula_rebaTitle);
       // Summary teks
-      const sum = isVideo ? r.summary : `REBA: ${r.summary.reba_summary}\n RULA: ${r.summary.rula_summary}`;
+      const sum = isVideo ? r.summary : `REBA: ${r.summary.reba_summary}\nRULA: ${r.summary.rula_summary}`;
       const sb = document.createElement('div');
       sb.className = 'feedback';
       sb.textContent = sum;
