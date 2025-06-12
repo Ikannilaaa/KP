@@ -167,7 +167,6 @@
       result.appendChild(img);
 
       result.append(infoSection(r, false));
-      result.appendChild(renderAdjustments(r.details));
     }
 
     function renderVideo(r) {
@@ -244,8 +243,12 @@
         frag.appendChild(renderAdjustments(r.details));
       }
 
+      const feedback_rula_rebaTitle = document.createElement('div');
+      feedback_rula_rebaTitle.className = 'section-title';
+      feedback_rula_rebaTitle.textContent = 'Feedback Rula & Reba';
+      frag.appendChild(feedback_rula_rebaTitle);
       // Summary teks
-      const sum = isVideo ? r.summary : `${r.summary.reba_summary}\n${r.summary.rula_summary}`;
+      const sum = isVideo ? r.summary : `REBA: ${r.summary.reba_summary}\n RULA: ${r.summary.rula_summary}`;
       const sb = document.createElement('div');
       sb.className = 'feedback';
       sb.textContent = sum;
