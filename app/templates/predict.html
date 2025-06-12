@@ -216,6 +216,25 @@
       return adjDiv;
     }
 
+    function renderScoreGroup(title, scores, prefix) {
+      const div = document.createElement('div');
+      div.innerHTML = `<div class="section-title">${title}</div>`;
+      const gd = document.createElement('div');
+      gd.className = 'grid';
+
+      const keys = ['upper_arm', 'lower_arm', 'wrist', 'neck', 'trunk', 'leg', 'final'];
+      keys.forEach(k => {
+        const label = k.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        const val = scores[`${prefix}_${k}_score`]?.toFixed(1) ?? '-';
+        const box = document.createElement('div'); box.className = 'box';
+        box.innerHTML = `<div class="label">${label}</div><div class="value">${val}</div>`;
+        gd.appendChild(box);
+      });
+
+      div.appendChild(gd);
+      return div;
+    }
+
     function infoSection(r, isVideo) {
       const frag = document.createDocumentFragment();
 
@@ -251,6 +270,15 @@
 
       if (!isVideo && r.details) {
         frag.appendChild(renderAdjustments(r.details));
+      }
+
+      if (isVideo) {
+        frag.appendChild(renderScoreGroup('Mayoritas Skor REBA', r.majority_scores, 'reba'));
+        frag.appendChild(renderScoreGroup('Mayoritas Skor RULA', r.majority_scores, 'rula'));
+        frag.appendChild(renderScoreGroup('Skor Maksimum REBA', r.max_scores, 'reba'));
+        frag.appendChild(renderScoreGroup('Skor Maksimum RULA', r.max_scores, 'rula'));
+        frag.appendChild(renderScoreGroup('Skor Minimum REBA', r.min_scores, 'reba'));
+        frag.appendChild(renderScoreGroup('Skor Minimum RULA', r.min_scores, 'rula'));
       }
 
       const feedback_rula_rebaTitle = document.createElement('div');
