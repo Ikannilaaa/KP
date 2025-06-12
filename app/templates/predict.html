@@ -467,14 +467,42 @@
         frag.appendChild(renderScoreGroup('Skor Minimum RULA', r.min_scores, 'rula'));
       }
 
+      // Buat container judul dan tombol copy
+      const feedbackRulaRebaHeader = document.createElement('div');
+      feedbackRulaRebaHeader.style.display = 'flex';
+      feedbackRulaRebaHeader.style.alignItems = 'center';
+      feedbackRulaRebaHeader.style.gap = '8px';
+
       const feedback_rula_rebaTitle = document.createElement('div');
       feedback_rula_rebaTitle.className = 'section-title';
       feedback_rula_rebaTitle.textContent = 'Feedback Rula & Reba';
-      frag.appendChild(feedback_rula_rebaTitle);
-      // Summary teks
+
+      // Buat tombol copy
+      const copyRulaRebaButton = document.createElement('button');
+      copyRulaRebaButton.title = 'Salin Rula & Reba';
+      copyRulaRebaButton.style.background = 'none';
+      copyRulaRebaButton.style.border = 'none';
+      copyRulaRebaButton.style.cursor = 'pointer';
+      copyRulaRebaButton.onclick = () => copySwalTextById('rulaRebaText');
+
+      copyRulaRebaButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" fill="#2563eb" viewBox="0 0 24 24">
+          <path d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1Zm3 4H8a2 2 0 0 0-2 2v16h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2Zm0 18H8V7h11v16Z"/>
+        </svg>
+      `;
+
+      // Gabungkan judul dan tombol ke container
+      feedbackRulaRebaHeader.appendChild(feedback_rula_rebaTitle);
+      feedbackRulaRebaHeader.appendChild(copyRulaRebaButton);
+
+      // Masukkan ke frag
+      frag.appendChild(feedbackRulaRebaHeader);
+
+      // Buat elemen feedback
       const sum = isVideo ? renderSummaryToText(r) : `REBA: ${r.summary.reba_summary}\nRULA: ${r.summary.rula_summary}`;
       const sb = document.createElement('div');
       sb.className = 'feedback';
+      sb.id = 'rulaRebaText'; // ID yang dipakai buat salin teks
       sb.textContent = sum;
       frag.appendChild(sb);
 
