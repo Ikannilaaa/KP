@@ -77,8 +77,8 @@ def summarize_results(results):
             f"{interpret_score(rula_avg, rula_major, rula_max, 'RULA')}\n"
             f"{interpret_score(reba_avg, reba_major, reba_max, 'REBA')}\n\n"
             f"Ringkasan teks terbanyak:\n {feedback_summary}\n\n"
-            f"Rata-rata sudut tubuh:\n" +
-            "\n".join([f"- {k.replace('_', ' ').capitalize()}: {v:.2f}°" for k, v in average_sudut.items()]) + "\n"
+            # f"Rata-rata sudut tubuh:\n" +
+            # "\n".join([f"- {k.replace('_', ' ').capitalize()}: {v:.2f}°" for k, v in average_sudut.items()]) + "\n"
         )
 
         return summary_feedback
