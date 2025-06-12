@@ -76,7 +76,7 @@ def summarize_results(results):
             f"Analisa dari {count} frame:\n\n"
             f"{interpret_score(rula_avg, rula_major, rula_max, 'RULA')}\n"
             f"{interpret_score(reba_avg, reba_major, reba_max, 'REBA')}\n\n"
-            f"Ringkasan teks terbanyak:\n {feedback_summary}\n\n"
+            f"Ringkasan teks terbanyak:\n {feedback_summary}\n"
             # f"Rata-rata sudut tubuh:\n" +
             # "\n".join([f"- {k.replace('_', ' ').capitalize()}: {v:.2f}°" for k, v in average_sudut.items()]) + "\n"
         )
