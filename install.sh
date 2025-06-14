@@ -91,7 +91,7 @@ pip3 install flask cloudpickle pandas scikit-learn joblib flask-socketio eventle
 
 mkdir skripsi && cd skripsi
 
-git clone https://github.com/Danar1111/Openpose-Backend.git
+git clone https://${GITHUB_TOKEN}@github.com/Danar1111/Openpose-Backend.git
 
 cd Openpose-Backend/
 
