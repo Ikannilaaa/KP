@@ -138,10 +138,6 @@
       background-color: #f3f4f6; /* sedikit lebih terang dari putih */
       font-style: italic;
     }
-
-    #resultDisplay {
-      text-align: center;
-    }
   </style>
 </head>
 <body>
@@ -287,6 +283,8 @@
 
       const img = document.createElement('img');
       img.src = r.gambar_path;
+      img.style.display = 'block';
+      img.style.margin = '0 auto';
       result.appendChild(img);
 
       result.append(infoSection(r, false));
@@ -297,6 +295,8 @@
 
       const img = document.createElement('img');
       img.src = r.representative_image;
+      img.style.display = 'block';
+      img.style.margin = '0 auto';
       result.appendChild(img);
 
       result.append(infoSection(r, true));
