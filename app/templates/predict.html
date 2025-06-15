@@ -92,17 +92,24 @@
       color: #1e293b;
     }
     #intervalSelect {
-      margin-top: 12px;
-      padding: 10px 12px;
-      font-size: 14px;
-      border: 2px solid #2563eb;
-      border-radius: 6px;
-      background-color: #ffffff;
-      color: #1e3a8a;
-      font-weight: 500;
+      display: block;
+      margin-top: 16px;
+      padding: 10px 14px;
       width: 100%;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-      transition: border-color 0.2s, box-shadow 0.2s;
+      font-size: 14px;
+      font-weight: 500;
+      color: #1e3a8a;
+      background-color: #ffffff;
+      border: 2px solid #2563eb;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="%232563eb" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      background-size: 16px;
+      cursor: pointer;
     }
 
     #intervalSelect:focus {
@@ -115,7 +122,6 @@
       font-weight: 400;
       color: #0f172a;
     }
-
   </style>
 </head>
 <body>
