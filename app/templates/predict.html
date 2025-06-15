@@ -112,15 +112,25 @@
       cursor: pointer;
     }
 
-    #intervalSelect:focus {
-      outline: none;
-      border-color: #1d4ed8;
-      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.3);
-    }
-
     #intervalSelect option {
+      font-size: 14px;
       font-weight: 400;
       color: #0f172a;
+      background-color: #ffffff;
+      padding: 8px 12px;
+    }
+
+    #intervalSelect::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    #intervalSelect::-webkit-scrollbar-thumb {
+      background-color: #2563eb;
+      border-radius: 4px;
+    }
+
+    #intervalSelect::-webkit-scrollbar-track {
+      background-color: #f1f5f9;
     }
   </style>
 </head>
