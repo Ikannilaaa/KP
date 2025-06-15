@@ -103,6 +103,13 @@
         Klik atau seret file ke sini
       </div>
       <input type="file" id="fileInput" accept="image/*,video/*" style="display:none">
+      <select id="intervalSelect" style="display:none; margin-top: 10px;">
+        <option value="" disabled selected>Pilih Interval (detik)</option>
+        <option value="30">30</option>
+        <option value="60">60</option>
+        <option value="120">120</option>
+        <option value="300">300</option>
+      </select>
     </div>
 
     <!-- KANAN: Hasil -->
@@ -151,20 +158,36 @@
       const type = file.type.startsWith('image/') ? 'image' : 'video';
       drop.innerHTML = '';
       const reader = new FileReader();
+
       reader.onload = () => {
         const el = type === 'image' ? document.createElement('img') : document.createElement('video');
         el.src = reader.result;
         if (type === 'video') el.controls = true;
         drop.appendChild(el);
-        callAPI(type);
+
+        const intervalSelect = document.getElementById('intervalSelect');
+        
+        if (type === 'video') {
+          intervalSelect.style.display = 'block';
+          intervalSelect.onchange = () => {
+            intervalSelect.style.display = 'none'; // hide again after selection
+            callAPI(type, intervalSelect.value);
+            intervalSelect.value = ""; // reset after submit
+          };
+        } else {
+          intervalSelect.style.display = 'none';
+          callAPI(type);
+        }
       };
+
       reader.readAsDataURL(file);
     }
 
-    async function callAPI(type) {
+    async function callAPI(type, interval = null) {
       result.innerHTML = `<div class="center-message">Menganalisis... mohon tunggu.</div>`;
       const fd = new FormData();
       fd.append(type, curr);
+      if (interval) fd.append('interval', interval);
       try {
         const res = await fetch(`https://vps.danar.site/model1/predict/${type}`, {
           method: 'POST', body: fd
