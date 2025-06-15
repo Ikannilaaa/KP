@@ -63,16 +63,19 @@ def process_video(job_folder, job_id, interval):
         shutil.rmtree(job_folder)
         print(f"[DEBUG] Folder job {job_folder} sudah dibersihkan.")
 
-def sample_video_to_folder(video_path, output_folder, frame_interval):
+def sample_video_to_folder(video_path, output_folder, user_interval):
     cap = cv2.VideoCapture(video_path)
+    fps = cap.get(cv2.CAP_PROP_FPS) or 30
     frame_count = 0
+
+    adjusted_interval = int(user_interval * (fps / 30))
 
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
 
-        if frame_count % frame_interval == 0:
+        if frame_count % adjusted_interval == 0:
             filename = f"{frame_count:06d}.jpg"
             filepath = os.path.join(output_folder, filename)
             cv2.imwrite(filepath, frame)
