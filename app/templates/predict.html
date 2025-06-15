@@ -132,6 +132,13 @@
     #intervalSelect::-webkit-scrollbar-track {
       background-color: #f1f5f9;
     }
+
+    #intervalSelect option:disabled {
+      color: #9ca3af; /* abu-abu soft */
+      background-color: #f3f4f6; /* sedikit lebih terang dari putih */
+      font-style: italic;
+      cursor: not-allowed;
+    }
   </style>
 </head>
 <body>
@@ -218,6 +225,13 @@
             const val = parseInt(option.value);
             if (!isNaN(val)) {
               option.disabled = val > estimatedTotalFrames;
+              option.disabled = tooBig;
+
+              option.removeAttribute('title');
+
+              if (tooBig) {
+                option.title = 'Interval ini terlalu besar untuk durasi video';
+              }
             }
           });
         };
