@@ -8,7 +8,7 @@ from app.services.job_manager import update_job
 from app.utils.summarize_results import summarize_results
 from app.services.image_visualizer import generate_pose_visualization
 
-def process_video(job_folder, job_id):
+def process_video(job_folder, job_id, interval):
     video_path = os.path.join(job_folder, "video.mp4")
 
     frames_folder = os.path.join(job_folder, "frames")
@@ -25,7 +25,7 @@ def process_video(job_folder, job_id):
         if direction_score > 0:
             video_path = flip_video(video_path)
 
-        sample_video_to_folder(video_path, frames_folder)
+        sample_video_to_folder(video_path, frames_folder, interval)
         run_openpose_on_folder(frames_folder, json_folder, output_image_folder)
 
         sampled_results = process_openpose_results(json_folder, frames_folder)
@@ -63,7 +63,7 @@ def process_video(job_folder, job_id):
         shutil.rmtree(job_folder)
         print(f"[DEBUG] Folder job {job_folder} sudah dibersihkan.")
 
-def sample_video_to_folder(video_path, output_folder, frame_interval=30):
+def sample_video_to_folder(video_path, output_folder, frame_interval):
     cap = cv2.VideoCapture(video_path)
     frame_count = 0
 

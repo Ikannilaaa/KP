@@ -33,6 +33,7 @@ def predict_video():
         return jsonify({"error": "No video file provided"}), 400
 
     file = request.files['video']
+    interval = request.form.get('interval', default=30, type=int)
 
     job_id = create_job()
 
@@ -43,7 +44,7 @@ def predict_video():
     file.save(video_path) 
 
     import threading
-    threading.Thread(target=process_video, args=(job_folder, job_id)).start()
+    threading.Thread(target=process_video, args=(job_folder, job_id, interval)).start()
 
     return jsonify({"job_id": job_id})
 
