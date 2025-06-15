@@ -52,7 +52,7 @@ def process_video(job_folder, job_id, interval):
                         processed_keypoints = [processed_keypoints]
 
                 output_image_path = generate_pose_visualization(
-                    image_bytes, processed_keypoints, best_frame, is_flipped=(direction_score > 0)
+                    image_bytes, processed_keypoints, best_frame, is_flipped=0
                 )
 
                 final_result["representative_image"] = output_image_path
