@@ -47,7 +47,7 @@ def process_pose_from_bytes(image_bytes):
         "model_pose": "BODY_25",
         "hand": True,
         "number_people_max": 1,
-        "net_resolution": "-1x160",
+        # "net_resolution": "-1x160",
         "model_folder": "/root/openpose/models"
     }
 
