@@ -565,6 +565,18 @@
 			const intv = setInterval(async () => {
 				try {
 					const res = await fetch(`https://vps.danar.site/model1/websocket/summary?sid=${userSID}`);
+
+					if (res.status === 404) {
+						console.log("Summary belum tersedia, ulangi lagi dalam 1 detik...");
+						return;
+					} else if (res.status === 410) {
+						clearInterval(intv);
+						summaryDisplay.textContent = "Summary sudah kedaluwarsa.";
+						return;
+					} else if (!res.ok) {
+						throw new Error(`HTTP error! Status: ${res.status}`);
+					}
+
 					const data = await res.json();
 
 					if (data && data.summary) {
@@ -589,7 +601,7 @@
 					clearInterval(intv);
 					summaryDisplay.textContent = `Terjadi kesalahan saat mengambil summary.`;
 				}
-			}, 5000);
+			}, 1000);
 		}
     };
 
