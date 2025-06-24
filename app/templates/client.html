@@ -1,4 +1,3 @@
-<!-- FINAL CLIENT OTOMATIS MUNCULKAN SUMMARY -->
 <html>
 <head>
   <title>Realtime Ergonomic Posture Detection</title>
@@ -569,6 +568,17 @@
 					const data = await res.json();
 
 					if (data && data.summary) {
+						const renderedText = renderSummaryToText(data);
+
+						if (
+							!renderedText.includes("Summary dari") || 
+							renderedText.includes("Belum ada summary") || 
+							renderedText.trim().length < 100
+						) {
+							console.log("Summary belum valid, ulangi lagi dalam 2 detik...");
+							return;
+						}
+
 						clearInterval(intv);
 						summaryDisplay.textContent = renderSummaryToText(data);
 					} else if (data.error) {
@@ -579,7 +589,7 @@
 					clearInterval(intv);
 					summaryDisplay.textContent = `Terjadi kesalahan saat mengambil summary.`;
 				}
-			}, 1000);
+			}, 5000);
 		}
     };
 
