@@ -580,7 +580,7 @@
 						}
 
 						clearInterval(intv);
-						summaryDisplay.textContent = renderSummaryToText(data);
+						summaryDisplay.textContent = renderedText;
 					} else if (data.error) {
 						clearInterval(intv);
 						summaryDisplay.textContent = `Error: ${data.error}`;
