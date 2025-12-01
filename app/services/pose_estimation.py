@@ -4,7 +4,13 @@ import json
 import os
 import subprocess
 import pandas as pd
-from openpose import pyopenpose as op
+# from openpose import pyopenpose as op
+
+try:
+    from openpose import pyopenpose as op
+except ImportError:
+    op = None
+
 from app.utils.image_converter import bytes_to_cv2
 from app.services.model_predictor import predict_from_keypoints_df
 from app.services.image_visualizer import generate_pose_visualization
@@ -44,6 +50,16 @@ def detect_facing_direction(keypoints):
     return score
 
 def process_pose_from_bytes(image_bytes):
+    if op is None:
+        return {
+            "version": "1.0",
+            "bodies": [],
+            "feedback": "OpenPose library not available.",
+            "gambar_path": None,
+            "rula_score": 0,
+            "reba_score": 0
+        }
+
     params = {
         "model_pose": "BODY_25",
         "hand": True,

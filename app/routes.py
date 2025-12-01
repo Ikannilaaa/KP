@@ -1,10 +1,12 @@
-from flask import Blueprint, request, jsonify, send_from_directory, render_template
+from flask import Blueprint, request, jsonify, send_from_directory, render_template, send_file
 from app.services.pose_estimation import process_pose_from_bytes
 from app.services.video_processor import process_video
 from app.services.job_manager import create_job, get_job
+from app.services.tts_service import process_tts, get_supported_languages, AUDIO_OUTPUT_DIR
 from datetime import datetime, timedelta
 from app.ws_handlers import summary_storage
 import os
+import threading
 
 pose_bp = Blueprint('pose', __name__)
 
@@ -43,7 +45,7 @@ def predict_video():
     video_path = os.path.join(job_folder, "video.mp4")
     file.save(video_path) 
 
-    import threading
+    # Menggunakan threading agar tidak memblokir server
     threading.Thread(target=process_video, args=(job_folder, job_id, interval)).start()
 
     return jsonify({"job_id": job_id})
@@ -84,3 +86,30 @@ def serve_client():
 @pose_bp.route("/client")
 def serve_client_predict():
     return render_template("predict.html")
+
+# === ROUTE BARU KHUSUS FITUR TTS (PASTIKAN BAGIAN INI ADA) ===
+
+@pose_bp.route("/tts-simulation")
+def tts_simulation_page():
+    """Halaman dummy untuk mencoba fitur TTS"""
+    languages = get_supported_languages()
+    return render_template("tts_dummy.html", languages=languages)
+
+@pose_bp.route("/api/generate-tts", methods=["POST"])
+def generate_tts_api():
+    """API untuk memproses teks -> translate -> audio"""
+    data = request.json
+    text = data.get('text')
+    lang = data.get('lang', 'id')
+    
+    result = process_tts(text, lang)
+    
+    if "error" in result:
+        return jsonify(result), 500
+        
+    return jsonify(result)
+
+@pose_bp.route('/audio/<path:filename>')
+def serve_audio(filename):
+    """Untuk menyajikan file audio hasil generate"""
+    return send_from_directory(AUDIO_OUTPUT_DIR, filename)

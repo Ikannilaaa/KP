@@ -2,11 +2,18 @@ import cv2
 import numpy as np
 import json
 import os
-from openpose import pyopenpose as op
+# from openpose import pyopenpose as op
 from app.utils.image_converter import bytes_to_cv2
 from app.services.model_predictor import predict_from_keypoints_df
 from app.services.image_visualizer import generate_pose_visualization
 from app.services.pose_estimation import get_keypoints
+
+# bypass openpose import for this environment
+try:
+    from openpose import pyopenpose as op
+except ImportError:
+    print("OpenPose library could not be found. Dummy mode is active.")
+    op = None
 
 def run_openpose(image, opWrapper):
     datum = op.Datum()
@@ -43,6 +50,13 @@ def detect_facing_direction(keypoints):
     return score
 
 def process_pose_from_bytes(image_bytes):
+    if op is None:
+        return {
+            "version": "1.0",
+            "bodies": [],
+            "feedback": "OpenPose library not available."
+        }
+        
     params = {
         "model_pose": "BODY_25",
         "hand": True,

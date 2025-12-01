@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulasi Ergonomi TTS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body { padding: 20px; background-color: #f8f9fa; }
+        .container { max-width: 800px; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .audio-player { width: 100%; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2 class="mb-4">Simulasi Hasil Analisis & TTS</h2>
+    
+    <div class="mb-3">
+        <label for="analysisText" class="form-label"><strong>Hasil Analisis (Dummy):</strong></label>
+        <textarea class="form-control" id="analysisText" rows="5">
+RULA menunjukkan postur yang perlu perhatian. Rata-rata skor berada di sekitar 3.5, mayoritas 4, dan skor maksimum 6.
+Disarankan untuk memperbaiki posisi duduk dan istirahat sejenak.
+        </textarea>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label for="languageSelect" class="form-label">Translate to:</label>
+            <select class="form-select" id="languageSelect">
+                {% for lang in languages %}
+                <option value="{{ lang.code }}" {% if lang.code == 'id' %}selected{% endif %}>
+                    {{ lang.name }}
+                </option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <button id="generateBtn" class="btn btn-success w-100">
+        Terjemahkan & Buat Audio
+    </button>
+
+    <hr class="my-4">
+
+    <div id="outputArea" style="display: none;">
+        <h5>Hasil:</h5>
+        <div class="alert alert-info">
+            <strong>Terjemahan:</strong> <span id="translatedTextResult"></span>
+        </div>
+        
+        <p>Audio:</p>
+        <audio id="audioPlayer" controls class="audio-player">
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+</div>
+
+<script>
+    document.getElementById('generateBtn').addEventListener('click', async () => {
+        const text = document.getElementById('analysisText').value;
+        const lang = document.getElementById('languageSelect').value;
+        const btn = document.getElementById('generateBtn');
+        const outputArea = document.getElementById('outputArea');
+
+        if (!text) return alert("Isi teks analisis dulu!");
+
+        // Loading state
+        btn.disabled = true;
+        btn.innerText = "Memproses (Translate + TTS)...";
+        outputArea.style.display = 'none';
+
+        try {
+            const response = await fetch('/api/generate-tts', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ text: text, lang: lang })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                document.getElementById('translatedTextResult').innerText = result.translated_text;
+                
+                // Update audio source
+                const audioPlayer = document.getElementById('audioPlayer');
+                audioPlayer.src = "/audio/" + result.audio_filename;
+                audioPlayer.load();
+                
+                outputArea.style.display = 'block';
+                // Auto play (opsional, browser mungkin memblokir)
+                try { await audioPlayer.play(); } catch(e) {}
+            } else {
+                alert("Error: " + (result.error || "Gagal memproses"));
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Terjadi kesalahan koneksi");
+        } finally {
+            btn.disabled = false;
+            btn.innerText = "Terjemahkan & Buat Audio";
+        }
+    });
+</script>
+
+</body>
+</html>
